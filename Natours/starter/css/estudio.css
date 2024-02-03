@@ -1,0 +1,324 @@
+/* 
+COLORS:
+
+Light green: #7ed56f
+Medium green: #55c57a
+Dark green: #28b485
+
+*/
+/* Afectamos todos los elementos reales, y los pseudo elementos
+para que tengamos un comportamiento consistente en todo */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  /* Dice que es mala practica porque elimina la posibilidad de que
+  el usuario pueda setear el font-size desde el navegador. Ya que
+  ponerlo asi hace que se sobreescriba ello y no tenga efecto.
+  
+  Entonces es mejor ponerlo en % ya que eso seria calculado del 
+  default del navegador.*/
+  /* font-size: 10px; */
+
+  font-size: 62.5%;
+  /* Corresponde 10px si el default no lo cambia el usuario. Y el
+  default siempre es 16px */
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  /* font-size: 16px; */
+  line-height: 1.7;
+  color: #777;
+  padding: 3rem;
+  box-sizing: border-box;
+}
+
+.header {
+  height: 95vh;
+  /* Para poder setear el logo-box como absolute, debe de ser
+  contenido por un contenedor establecido en relative... */
+  position: relative;
+  background-image: linear-gradient(to right bottom, #7ed56fc2, #28b485c2),
+    url(../img/hero.jpg);
+  background-size: cover;
+  background-position: top;
+  /* Nueva propiedad de css para cortar */
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+}
+
+.header__logo-box {
+  position: absolute;
+  top: 4rem;
+  left: 4rem;
+}
+
+.header__logo {
+  height: 3.5rem;
+}
+
+/* .logo:hover {
+  animation: moveInRight 1s ease-out;
+} */
+
+.header__text-box {
+  /* La forma mas facil de mantener centrado algo dentro de un
+  contenedor */
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.heading-primary {
+  color: #fff;
+  text-transform: uppercase;
+
+  backface-visibility: hidden;
+  margin-bottom: 6rem;
+}
+
+.heading-primary--main {
+  display: block;
+  font-size: 6rem;
+  font-weight: 400;
+  letter-spacing: 3.5rem;
+
+  /* Aplicamos animacion creada en @keyframes */
+  animation-name: moveInLeft;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+
+  /* animation-delay: ; */
+  /* animation-iteration-count: ; */
+  /* animation-timing-function: ; */
+  /* Podemos establecer un delay, tambien con iteration-count
+  podemos establecer las veces que se repetira, y luego el 
+  timing mediante el cual podemos usar los cubic bezier que
+  disponemos para manipular la forma en que se comporta la animacion */
+}
+
+.heading-primary--sub {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1.75rem;
+
+  /* usando la propiedad animation para establecer todo en una
+  sola linea */
+
+  animation: moveInRight 1s ease-out;
+}
+
+/* Pseudo selectores. Estamos seleccionando aquellos elementos que
+tienen la clase btn pero que ademas funcionan como un link, es
+decir, son anchors, y los elementos de clase btn que han sido
+visited (el usuario ha dado click) */
+.btn:link,
+.btn:visited {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1.5rem 4rem;
+  /* Lo ponemos como inline block y no block porque, aunque 
+  en ambos casos se genera el salto de linea, si lo ponemos
+  como block ocupara toda la linea, pero con inline-block 
+  ocupara solo el espacio que definimos 
+  
+  Ahora bien, como es un inline block, lo podemos tratar como
+  si fuera texto, de modo que centrarlo va a ser tan simple como
+  centrar un texto en un parrafo o un h1.
+  */
+  display: inline-block;
+  border-radius: 10rem;
+  transition: all 0.2s;
+  position: relative;
+  font-size: 1.6rem;
+}
+
+.btn:hover {
+  transform: translateY(-4px);
+  /* direccionX direccionY blur color */
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+.btn--white {
+  background-color: #fff;
+  color: #777;
+}
+/* Los pseudo elementos se agregan como un elemento virtual
+es decir, que no forman parte de nuestro DOM ;), esto hace que
+podamos agregar y animar ciertos elementos que no son necesarios
+para construir la estructura de nuestro html. */
+
+/* Los pseudo elementos siempre necesitan un content y una
+propiedad de visualizacion */
+.btn::after {
+  content: "";
+  display: inline-block;
+  /* Este tamaño es relativo al tamaño del objeto padre */
+  height: 100%;
+  width: 100%;
+  border-radius: 10rem;
+  /* Para que surja efecto btn debe estar en relative. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all 0.4s;
+}
+
+.btn--white::after {
+  background-color: #fff;
+}
+
+.btn:hover::after {
+  transform: scale(1.5);
+  opacity: 0;
+}
+
+@keyframes moveInLeft {
+  /* lo que debe suceder cuando comience la animacion */
+  0% {
+    opacity: 0;
+    transform: translateX(-10rem);
+  }
+
+  80% {
+    transform: translateX(1rem);
+  }
+
+  /* Lo que debe suceder cuando finalice la animacion */
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+@keyframes moveInRight {
+  /* lo que debe suceder cuando comience la animacion */
+  0% {
+    opacity: 0;
+    transform: translateX(10rem);
+  }
+
+  80% {
+    transform: translateX(-1rem);
+  }
+
+  /* Lo que debe suceder cuando finalice la animacion */
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+@keyframes moveInBottom {
+  /* lo que debe suceder cuando comience la animacion */
+  0% {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+
+  /* Lo que debe suceder cuando finalice la animacion */
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+.btn--animated {
+  animation: moveInBottom 0.5s ease-out 0.75s;
+  /* Esto es para que el estado inicial que establecimos en
+    la animacion (opacity: 0 y transform transalateY(30px) se
+    establezcan desde antes que la animacion comience. */
+  animation-fill-mode: backwards;
+}
+
+/* El desarrollador dice que podriamos usar ems para setear
+  el comportamiento de font-size y los tamaños calculados en ello
+  pero dice que es mas complicado, y que siempre trabaja con rems
+  para hacerlo todo un poco mas simple. */
+
+/* Sass nos permite declarar variables, usar anidaciones,
+  operadores, mixins, funciones, extends, condicionales y loops,
+ entre otros 
+ 
+ Tenemos Sass y Scss, Sass es sin corchetes, scss es como usar 
+ css pero con las capacidades que brinda sass */
+
+ /* Ahora todo lo trabajaremos con sass/scss */
+
+ /* Existen cuatro principios para el diseño responsivo:
+ 
+ 1) Fluid Layouts:
+    Permite que la pagina se adapte al viewport. Usamos % o vh/vw en
+    lugar de px. Usamos max-width en vez de width
+
+ 2) Responsive Units:
+    Usamos rem en lugar de px para la mayoria de lengths
+    Esto lo hace facil de escalar.
+ 
+ 3) Flexible Images:
+    Por defecto las imagenes no escalan automaticamente al cambiar
+    el viewport. Esto se debe arreglar.
+
+    Siempre usamos % para las dimensiones de las imagenes, junto con
+    la propiedad max-width
+
+ 4) Media Queries:
+    Usamos breakpoints para cambiar el estilo dependiendo del tamaño
+    de la pantalla.
+
+    Las media queries per se son inutiles. Debemos de pensar en
+    el diseño responsivo desde los fluid layouts, responsive units y
+    flexible images.
+ 
+
+FLUID LAYOUTS:
+
+  A dia de hoy tenemos dos herramientas poderosas para el diseño
+  responsivo. Estas son:
+
+  Flexbox y Css Grid (existe el float layout pero esta quedando obsoleto)
+
+  Flexbox:
+    Perfecto para construir layouts unidimensionales (fila o columna)
+
+  Css Grid:
+    Perfecto para layouts de pagina, layouts grandes y componentes 
+    complejos. Es bidimensional
+
+  Tener en cuenta que, Css Grid y Flexbox pueden ser usados juntos,
+  es decir, diria que es util usar Css Grid y en el, usar Flexbox
+  para organizar el contenido.
+
+ */
+
+ /* 
+  Tengo algunos pensamientos sobre este curso y es que, es bueno 
+  porque hay varias cosas que estoy aprendiendo, sobre todo en cuanto
+  a la estructura, el uso de scss, la estructura de folders y archivos
+  y tambien algunas cosas nuevas de css y consejos utiles para
+  mantener un diseño responsivo.
+
+  Sin embargo, se que las clases de utilidad por ejemplo se pueden
+  suplir usando lo que viene siendo Tailwind, de modo que por esta
+  parte no es que me interese mucho aprender a hacer las cosas asi.
+
+  Mi objetivo en todo caso seria realizar las paginas que queden como
+  muestra en el portafolio, pero sobre todo aprender lo que pueda
+  sobre el diseño responsivo, el uso de fluid layouts, flexbox y 
+  css grid. 
+ */
